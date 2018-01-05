@@ -1,1 +1,1 @@
-Problems that I parrticulary like
+Problems that I particulary like
