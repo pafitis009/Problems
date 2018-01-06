@@ -35,19 +35,20 @@ lint ass(int a , int b , int c){
 
 lint solve(){
     dp.assign(MAXN , vector<lint>());
-    int idx = 1 , cnt = 0;
-    
+    int idx = 1 , cnt = 0 , prev = 0;
+
     for(int i=0; i<all.size(); i++){
         if(i == 0) par[i] = all[i].first;
         else par[i] = par[i-1] + all[i].first;
     }
-    
+
     while(idx < blues + reds){
         if(all[idx].second != all[idx-1].second)
-            G[cnt++] = idx - prev;
+            G[cnt++] = idx - prev , prev = idx;
         idx++;
+
     }
-    
+
     G[cnt++] = idx - prev;
 
     for(int i=0; i<cnt; i++)
@@ -65,7 +66,7 @@ lint solve(){
 
             for(int i=G[cnt+1]-1; i>=0; i--)
                 dp[cnt+1][i] = min(dp[cnt+1][i] ,dp[cnt+1][i+1] + abs(all[idx-1].first - all[idx+G[cnt+1]-i-1].first));
-            
+
             cnt++;
         }
         idx++;
@@ -78,12 +79,12 @@ long long min_total_length(vector <int> r , vector<int> b){
     blues = b.size();
     reds = r.size();
     all.clear();
-    
+
     for(int i=0; i<blues; i++) all.push_back({b[i] , 1});
     for(int i=0; i<reds; i++) all.push_back({r[i] , -1});
 
     sort(all.begin() , all.end());
-    
+
     long long ret = solve();
 
     return ret;
